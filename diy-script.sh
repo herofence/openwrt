@@ -45,8 +45,7 @@ git_sparse_clone openwrt-18.06 https://github.com/immortalwrt/luci applications/
 git clone https://github.com/gdy666/luci-app-lucky.git package/lucky
 git clone --depth=1 https://github.com/linkease/nas-packages
 git clone --depth=1 https://github.com/linkease/nas-packages-luci
-#Linkease
-git clone --depth=1 --single-branch https://github.com/linkease/istore.git package/luci-app-quickstart
+git clone --depth=1 https://github.com/linkease/istore package/istore
 git clone --depth=1 --single-branch https://github.com/linkease/nas-packages.git
 git clone --depth=1 --single-branch https://github.com/linkease/nas-packages-luci.git
 

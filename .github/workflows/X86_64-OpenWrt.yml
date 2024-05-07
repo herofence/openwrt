@@ -167,6 +167,7 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         name: LEDE-${{ env.FIRMWARE_TAG }}-${{ env.DATE }}
+        allowUpdates: false
         tag: ${{ env.FIRMWARE_TAG }}
         token: ${{ secrets.GITHUB_TOKEN }}
         artifacts: ${{ env.FIRMWARE_PATH }}/*

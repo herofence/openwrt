@@ -164,8 +164,12 @@ jobs:
 
     - name: 发布固件
       uses: softprops/action-gh-release@master
+      if: steps.compile.outputs.status == 'success' && env.FIRMWARE_RELEASE == 'true'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         name: LEDE-${{ env.FIRMWARE_TAG }}-${{ env.DATE }}
+        allowUpdates: true
         tag: ${{ env.FIRMWARE_TAG }}
         token: ${{ secrets.GITHUB_TOKEN }}
         artifacts: ${{ env.FIRMWARE_PATH }}/*
@@ -186,8 +190,9 @@ jobs:
           - ${{ env.COMMIT_HASH }}
           
     - name: 删除旧版本
-      uses: dev-drprasad/delete-older-releases@v0.3.3
+      uses: dev-drprasad/delete-older-releases@master
       with:
         keep_latest: 10
+        delete_tags: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -166,9 +166,8 @@ jobs:
       if: steps.compile.outputs.status == 'success' && env.FIRMWARE_RELEASE == 'true'
       uses: ncipollo/release-action@v1
       with:
-        name: LEDE-${{ env.FIRMWARE_TAG }}-${{ env.DATE }}
-        allowUpdates: false
-        tag: ${{ env.FIRMWARE_TAG }}
+        allowUpdates: true
+        tag_name: LEDE-${{ env.FIRMWARE_TAG }}-${{ env.DATE }}
         token: ${{ secrets.GITHUB_TOKEN }}
         artifacts: ${{ env.FIRMWARE_PATH }}/*
         body: |

@@ -3,6 +3,8 @@ name: X86_64 OpenWrt
 on:
   workflow_dispatch:
 
+
+
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
@@ -166,6 +168,7 @@ jobs:
       if: steps.compile.outputs.status == 'success' && env.FIRMWARE_RELEASE == 'true'
       uses: ncipollo/release-action@v1
       with:
+
         allowUpdates: true
         tag_name: LEDE-${{ env.FIRMWARE_TAG }}-${{ env.DATE }}
         token: ${{ secrets.GITHUB_TOKEN }}

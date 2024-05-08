@@ -3,8 +3,6 @@ name: X86_64 OpenWrt
 on:
   workflow_dispatch:
 
-
-
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
@@ -170,7 +168,7 @@ jobs:
       with:
         name: LEDE-${{ env.FIRMWARE_TAG }}-${{ env.DATE }}
         allowUpdates: true
-        tag: ${{ env.FIRMWARE_TAG }}-${{ env.DATE }}
+        tag: ${{ env.FIRMWARE_TAG }}
         token: ${{ secrets.GITHUB_TOKEN }}
         artifacts: ${{ env.FIRMWARE_PATH }}/*
         body: |

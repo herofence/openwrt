@@ -6,8 +6,8 @@ sed -i 's/192.168.2.1/10.0.0.1/g' package/base-files/files/bin/config_generate
 # 更改boot分区大小为1M
 sed -i 's/256/1024/g' target/linux/x86/image/Makefile
 
-# 改为6.6内核
-sed -i 's/KERNEL_PATCHVER:=.*/KERNEL_PATCHVER:=6.6/g' ./target/linux/x86/Makefile
+# 改为6.8内核
+sed -i 's/KERNEL_PATCHVER:=.*/KERNEL_PATCHVER:=6.8/g' ./target/linux/x86/Makefile
 
 # 更改默认 Shell 为 zsh
 sed -i 's/\/bin\/ash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd

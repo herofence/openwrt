@@ -91,6 +91,8 @@ git clone https://github.com/gdy666/luci-app-lucky.git package/lucky
 git clone --depth=1 https://github.com/linkease/istore package/istore
 git clone --depth=1 https://github.com/linkease/nas-packages package/nas-packages
 git clone --depth=1 https://github.com/linkease/nas-packages-luci package/nas-packages-luci
+#内网测速
+git clone https://github.com/sirpdboy/netspeedtest.git package/netspeedtest
 #其它
 git clone --depth=1 -b openwrt-18.06 https://github.com/tty228/luci-app-wechatpush package/luci-app-serverchan
 git clone --depth=1 https://github.com/ilxp/luci-app-ikoolproxy package/luci-app-ikoolproxy

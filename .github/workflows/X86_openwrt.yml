@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  REPO_URL: https://github.com/coolsnowwolf/lede
+  REPO_URL: https://github.com/immortalwrt/immortalwrt
   REPO_BRANCH: master
   CONFIG_FILE: configs/x86_64.config
   DIY_SCRIPT: diy-script.sh
@@ -166,7 +166,7 @@ jobs:
       if: steps.compile.outputs.status == 'success' && env.FIRMWARE_RELEASE == 'true'
       uses: ncipollo/release-action@v1
       with:
-        name: LEDE-pasword-${{ env.FIRMWARE_TAG }}-${{ env.DATE }}
+        name: immortalwrt-${{ env.FIRMWARE_TAG }}-${{ env.DATE }}
         allowUpdates: true
         tag: ${{ env.FIRMWARE_TAG }}
         token: ${{ secrets.GITHUB_TOKEN }}

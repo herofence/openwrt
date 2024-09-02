@@ -163,16 +163,14 @@ jobs:
         path: ${{ env.FIRMWARE_PATH }}
 
     - name: 发布固件
-      if: steps.compile.outputs.status == 'success' && env.FIRMWARE_RELEASE == 'true'
-      uses: ncipollo/release-action@v1
+      uses: softprops/action-gh-release@master
       with:
         name: lede-${{ env.FIRMWARE_TAG }}-${{ env.DATE }}
-        allowUpdates: true
         tag: ${{ env.FIRMWARE_TAG }}
         token: ${{ secrets.GITHUB_TOKEN }}
         artifacts: ${{ env.FIRMWARE_PATH }}/*
         body: |
-          包含passwall、IPV6、打印机驱动
+          包含passwall、IPV6、打印机驱动、Docker、Zerotier
 
           ### 📒 固件信息
           - 💻 平台架构: ${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}

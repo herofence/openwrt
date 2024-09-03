@@ -170,7 +170,7 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         artifacts: ${{ env.FIRMWARE_PATH }}/*
         body: |
-          包含passwall、IPV6、打印机驱动、Docker、Zerotier
+          包含passwall、IPV6、打印机驱动、Docker、Zerotier、appfilter
 
           ### 📒 固件信息
           - 💻 平台架构: ${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}

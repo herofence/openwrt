@@ -1,10 +1,10 @@
-name: X86 OpenWrt
+name: X86_64 OpenWrt
 
 on:
   workflow_dispatch:
 
 env:
-  REPO_URL:  https://github.com/coolsnowwolf/lede
+  REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
   CONFIG_FILE: configs/x86_64.config
   DIY_SCRIPT: diy-script.sh
@@ -166,12 +166,13 @@ jobs:
       if: steps.compile.outputs.status == 'success' && env.FIRMWARE_RELEASE == 'true'
       uses: ncipollo/release-action@v1
       with:
-        name: lede-${{ env.FIRMWARE_TAG }}-${{ env.DATE }}
+        name: LEDE-${{ env.FIRMWARE_TAG }}-${{ env.DATE }}
+        allowUpdates: true
         tag: ${{ env.FIRMWARE_TAG }}
         token: ${{ secrets.GITHUB_TOKEN }}
         artifacts: ${{ env.FIRMWARE_PATH }}/*
         body: |
-          包含passwall、IPV6、打印机驱动、Docker、Zerotier、appfilter
+          包含passwall、IPV6、打印机驱动、Zerotier、appfilter、Docker
 
           ### 📒 固件信息
           - 💻 平台架构: ${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}
@@ -180,6 +181,11 @@ jobs:
           - 🚀 内核版本: ${{ env.KERNEL }}
           - 🌐 默认地址: 192.168.2.1
           - 🔑 默认密码: password
+          ### 🧊 固件版本
+          - 固件编译前最后一次➦[主源码](${{ env.REPO_URL }})更新记录
+          - ${{ env.COMMIT_DATE }}
+          - ${{ env.COMMIT_MESSAGE }}
+          - ${{ env.COMMIT_HASH }}
           
     - name: 删除旧版本
       uses: dev-drprasad/delete-older-releases@v0.3.3

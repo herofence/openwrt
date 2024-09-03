@@ -95,7 +95,7 @@ git clone --depth=1 https://github.com/linkease/nas-packages-luci package/nas-pa
 git clone https://github.com/sirpdboy/netspeedtest.git package/netspeedtest
 #访问控制
 git clone --depth=1 https://github.com/k-szuster/luci-access-control-package package/luci-app-access-control
-#上网行为控制
+#应用地滤
 git clone https://github.com/destan19/OpenAppFilter.git package/OpenAppFilter
 #其它
 git clone --depth=1 -b openwrt-18.06 https://github.com/tty228/luci-app-wechatpush package/luci-app-serverchan

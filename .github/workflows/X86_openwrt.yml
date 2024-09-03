@@ -163,7 +163,8 @@ jobs:
         path: ${{ env.FIRMWARE_PATH }}
 
     - name: 发布固件
-      uses: softprops/action-gh-release@master
+      if: steps.compile.outputs.status == 'success' && env.FIRMWARE_RELEASE == 'true'
+      uses: ncipollo/release-action@v1
       with:
         name: lede-${{ env.FIRMWARE_TAG }}-${{ env.DATE }}
         tag: ${{ env.FIRMWARE_TAG }}

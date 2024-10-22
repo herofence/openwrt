@@ -74,35 +74,35 @@ function git_sparse_clone() {
 # 添加额外插件
 #mosdns
 git clone --depth=1 https://github.com/sbwml/luci-app-mosdns package/luci-app-mosdns
-#msd_lite
+# msd_lite
 # git_sparse_clone master https://github.com/syb999/openwrt-19.07.1 package/network/services/msd_lite
 git clone --depth=1 https://github.com/ximiTech/luci-app-msd_lite package/luci-app-msd_lite
 git clone --depth=1 https://github.com/ximiTech/msd_lite package/msd_lite
-#主题
+# 主题
 git clone --depth=1 -b 18.06 https://github.com/jerrykuku/luci-theme-argon package/luci-theme-argon
 git clone --depth=1 https://github.com/jerrykuku/luci-app-argon-config package/luci-app-argon-config
 git clone https://github.com/y9858/luci-theme-opentomcat package/luci-theme-opentomcat
-#smartdns
+# smartdns
 git clone --depth=1 -b lede https://github.com/pymumu/luci-app-smartdns package/luci-app-smartdns
 git clone --depth=1 https://github.com/pymumu/openwrt-smartdns package/smartdns
-#diskman
+# diskman
 git clone https://github.com/lisaac/luci-app-diskman package/applications/luci-app-diskman
-#dockerman
+# dockerman
 git clone https://github.com/WYC-2020/luci-app-dockerman package/applications/luci-app-dockerman
-#lucky
+# lucky
 git clone https://github.com/gdy666/luci-app-lucky.git package/lucky
-#istore
+# istore
 git clone --depth=1 https://github.com/linkease/istore package/istore
 git clone --depth=1 https://github.com/linkease/nas-packages package/nas-packages
 git clone --depth=1 https://github.com/linkease/nas-packages-luci package/nas-packages-luci
-#内网测速
+# 内网测速
 git clone https://github.com/sirpdboy/netspeedtest.git package/netspeedtest
-#访问控制
-git clone --depth=1 https://github.com/k-szuster/luci-access-control-package package/luci-app-access-control
-#应用地滤
+# 访问控制
+# git clone --depth=1 https://github.com/k-szuster/luci-access-control-package package/luci-app-access-control
+# 应用过滤
 git clone https://github.com/destan19/OpenAppFilter.git package/OpenAppFilter
 #DDNS-GO
-git clone https://github.com/sirpdboy/luci-app-ddns-go.git package/ddns-go
+# git clone https://github.com/sirpdboy/luci-app-ddns-go.git package/ddns-go
 #luci-app-tailscale
 git clone https://github.com/asvow/luci-app-tailscale package/luci-app-tailscale
 #其它

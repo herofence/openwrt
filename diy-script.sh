@@ -99,6 +99,8 @@ git clone --depth=1 https://github.com/k-szuster/luci-access-control-package pac
 git clone https://github.com/destan19/OpenAppFilter.git package/OpenAppFilter
 #DDNS-GO
 git clone https://github.com/sirpdboy/luci-app-ddns-go.git package/ddns-go
+#luci-app-tailscale
+git clone https://github.com/asvow/luci-app-tailscale package/luci-app-tailscale
 #其它
 git clone --depth=1 -b openwrt-18.06 https://github.com/tty228/luci-app-wechatpush package/luci-app-serverchan
 git clone --depth=1 https://github.com/ilxp/luci-app-ikoolproxy package/luci-app-ikoolproxy

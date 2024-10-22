@@ -130,7 +130,7 @@ git_sparse_clone master https://github.com/vernesong/OpenClash luci-app-openclas
 cp -f $GITHUB_WORKSPACE/images/bg1.jpg package/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg
 
 # 更改默认主题
-sed -i 's/luci-theme-bootstrap/luci-theme-opentomcat/g' ./feeds/luci/collections/luci/Makefile
+sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' ./feeds/luci/collections/luci/Makefile
 
 # Alist
 git clone --depth=1 https://github.com/sbwml/luci-app-alist package/luci-app-alist

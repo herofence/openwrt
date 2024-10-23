@@ -20,7 +20,7 @@ sed -i "s/timezone='.*'/timezone='CST-8'/g" $CFG_FILE
 sed -i "/timezone='.*'/a\\\t\t\set system.@system[-1].zonename='Asia/Shanghai'" $CFG_FILE
 
 #替换 Tailscale 的默认启动脚本和配置
-sed -i '/\/etc\/init\.d\/tailscale/d;/\/etc\/config\/tailscale/d;' feeds/packages/net/tailscale/Makefile
+# sed -i '/\/etc\/init\.d\/tailscale/d;/\/etc\/config\/tailscale/d;' feeds/packages/net/tailscale/Makefile
 
 # 拉取仓库文件夹
 function merge_package() {
@@ -105,7 +105,7 @@ git clone https://github.com/destan19/OpenAppFilter.git package/OpenAppFilter
 #DDNS-GO
 # git clone https://github.com/sirpdboy/luci-app-ddns-go.git package/ddns-go
 #luci-app-tailscale
-git clone https://github.com/asvow/luci-app-tailscale package/luci-app-tailscale
+# git clone https://github.com/asvow/luci-app-tailscale package/luci-app-tailscale
 #其它
 git clone --depth=1 -b openwrt-18.06 https://github.com/tty228/luci-app-wechatpush package/luci-app-serverchan
 git clone --depth=1 https://github.com/ilxp/luci-app-ikoolproxy package/luci-app-ikoolproxy

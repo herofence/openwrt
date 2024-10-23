@@ -81,7 +81,7 @@ git clone --depth=1 https://github.com/ximiTech/msd_lite package/msd_lite
 # 主题
 git clone --depth=1 -b 18.06 https://github.com/jerrykuku/luci-theme-argon package/luci-theme-argon
 git clone --depth=1 https://github.com/jerrykuku/luci-app-argon-config package/luci-app-argon-config
-git clone https://github.com/y9858/luci-theme-opentomcat package/luci-theme-opentomcat
+git clone --depth=1  https://github.com/y9858/luci-theme-opentomcat package/luci-theme-opentomcat
 # smartdns
 git clone --depth=1 -b lede https://github.com/pymumu/luci-app-smartdns package/luci-app-smartdns
 git clone --depth=1 https://github.com/pymumu/openwrt-smartdns package/smartdns

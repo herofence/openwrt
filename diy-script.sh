@@ -80,7 +80,7 @@ git clone --depth=1 https://github.com/ximiTech/luci-app-msd_lite package/luci-a
 git clone --depth=1 https://github.com/ximiTech/msd_lite package/msd_lite
 # 主题
 # git clone --depth=1 -b 18.06 https://github.com/kiddin9/luci-theme-edge package/luci-theme-edge
-# git clone --depth=1 https://github.com/jerrykuku/luci-theme-argon package/luci-theme-argon
+# git clone --depth=1 -b 18.06 https://github.com/jerrykuku/luci-theme-argon package/luci-theme-argon
 # git clone --depth=1 https://github.com/jerrykuku/luci-app-argon-config package/luci-app-argon-config
 # git clone https://github.com/y9858/luci-theme-opentomcat package/luci-theme-opentomcat
 # git clone --depth=1 https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom package/luci-theme-infinityfreedom

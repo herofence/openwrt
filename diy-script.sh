@@ -79,10 +79,10 @@ git clone --depth=1 https://github.com/sbwml/luci-app-mosdns package/luci-app-mo
 git clone --depth=1 https://github.com/ximiTech/luci-app-msd_lite package/luci-app-msd_lite
 git clone --depth=1 https://github.com/ximiTech/msd_lite package/msd_lite
 # 主题
-git clone --depth=1 https://github.com/jerrykuku/luci-theme-argon package/luci-theme-argon
-git clone --depth=1 https://github.com/jerrykuku/luci-app-argon-config package/luci-app-argon-config
-git clone https://github.com/y9858/luci-theme-opentomcat package/luci-theme-opentomcat
-git clone --depth=1 https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom package/luci-theme-infinityfreedom
+# git clone --depth=1 https://github.com/jerrykuku/luci-theme-argon package/luci-theme-argon
+# git clone --depth=1 https://github.com/jerrykuku/luci-app-argon-config package/luci-app-argon-config
+# git clone https://github.com/y9858/luci-theme-opentomcat package/luci-theme-opentomcat
+# git clone --depth=1 https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom package/luci-theme-infinityfreedom
 # smartdns
 git clone --depth=1 -b lede https://github.com/pymumu/luci-app-smartdns package/luci-app-smartdns
 git clone --depth=1 https://github.com/pymumu/openwrt-smartdns package/smartdns
@@ -133,7 +133,7 @@ git clone https://github.com/xiaorouji/openwrt-passwall package/luci-app-passwal
 # cp -f $GITHUB_WORKSPACE/images/bg1.jpg package/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg
 
 # 更改默认主题
-sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' ./feeds/luci/collections/luci/Makefile
+# sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' ./feeds/luci/collections/luci/Makefile
 
 # 在线用户
 # git_sparse_clone main https://github.com/haiibo/packages luci-app-onliner

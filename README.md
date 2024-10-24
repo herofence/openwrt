@@ -6,3 +6,4 @@ https://github.com/gdy666/luci-app-lucky<br>
 https://github.com/sirpdboy/netspeedtest<br>
 https://github.com/destan19/OpenAppFilter<br>
 https://github.com/sirpdboy/luci-app-ddns-go<br>
+https://github.com/immortalwrt/immortalwrt<br>

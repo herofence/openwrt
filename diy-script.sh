@@ -134,7 +134,7 @@ git clone https://github.com/xiaorouji/openwrt-passwall package/luci-app-passwal
 # cp -f $GITHUB_WORKSPACE/images/bg1.jpg package/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg
 
 # 更改默认主题
-# sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' ./feeds/luci/collections/luci/Makefile
+sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' ./feeds/luci/collections/luci/Makefile
 
 # 在线用户
 # git_sparse_clone main https://github.com/haiibo/packages luci-app-onliner

@@ -116,7 +116,7 @@ git clone https://github.com/xiaorouji/openwrt-passwall package/luci-app-passwal
 # git_sparse_clone master https://github.com/vernesong/OpenClash luci-app-openclash
 
 # 更改默认主题
-sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' ./feeds/luci/collections/luci/Makefile
+sed -i "s/luci-theme-bootstrap/luci-theme-argon/g" ./feeds/luci/collections/luci/Makefile
 
 # 在线用户
 git_sparse_clone main https://github.com/haiibo/packages luci-app-onliner

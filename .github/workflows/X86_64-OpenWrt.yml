@@ -167,12 +167,12 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         name: LEDE-${{ env.FIRMWARE_TAG }}-${{ env.DATE }}
-        allowUpdates: true
+        allowUpdates: false
         tag: ${{ env.FIRMWARE_TAG }}
         token: ${{ secrets.GITHUB_TOKEN }}
         artifacts: ${{ env.FIRMWARE_PATH }}/*
         body: |
-          包含passwall、IPV6、打印机驱动
+          包含passwall、IPV6、打印机驱动、Zerotier、应用过滤、Docker
 
           ### 📒 固件信息
           - 💻 平台架构: ${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}
@@ -186,10 +186,4 @@ jobs:
           - ${{ env.COMMIT_DATE }}
           - ${{ env.COMMIT_MESSAGE }}
           - ${{ env.COMMIT_HASH }}
-          
-    - name: 删除旧版本
-      uses: dev-drprasad/delete-older-releases@v0.3.3
-      with:
-        keep_latest: 10
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        

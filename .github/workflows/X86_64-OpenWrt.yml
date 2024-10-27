@@ -161,6 +161,7 @@ jobs:
       with:
         name: ${{ env.SOURCE_REPO }}-firmware-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}-${{ env.FILE_DATE }}
         path: ${{ env.FIRMWARE_PATH }}
+        
     - name: 加载标签
       uses: actions/checkout@v2
 

@@ -167,8 +167,7 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         name: LEDE-${{ env.FIRMWARE_TAG }}-${{ env.DATE }}
-        tag_name: openWRT_${{env.FIRMWARE_TAG}}_${{env.DATE}}
-        allowUpdates: false
+        allowUpdates: true
         tag: ${{ env.FIRMWARE_TAG }}
         token: ${{ secrets.GITHUB_TOKEN }}
         artifacts: ${{ env.FIRMWARE_PATH }}/*

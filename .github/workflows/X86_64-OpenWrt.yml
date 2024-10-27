@@ -164,13 +164,15 @@ jobs:
         
     - name: 加载标签
       uses: actions/checkout@v2
+      with:
+       fetch-depth: 0
 
     - name: 发布固件
       if: steps.compile.outputs.status == 'success' && env.FIRMWARE_RELEASE == 'true'
       uses: ncipollo/release-action@v1
       with:
         name: LEDE-${{ env.FIRMWARE_TAG }}-${{ env.DATE }}
-        allowUpdates: true
+        allowUpdates: false
         tag: ${{ env.FIRMWARE_TAG }}
         token: ${{ secrets.GITHUB_TOKEN }}
         artifacts: ${{ env.FIRMWARE_PATH }}/*

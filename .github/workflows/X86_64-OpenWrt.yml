@@ -164,8 +164,6 @@ jobs:
         
     - name: 加载标签
       uses: actions/checkout@v4
-      with:
-       fetch-depth: 0
 
     - name: 发布固件
       if: steps.compile.outputs.status == 'success' && env.FIRMWARE_RELEASE == 'true'

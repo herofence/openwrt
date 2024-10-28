@@ -1,4 +1,4 @@
-name: X86 OpenWrt
+name: X86_64 OpenWrt
 
 on:
   workflow_dispatch:
@@ -163,16 +163,12 @@ jobs:
         path: ${{ env.FIRMWARE_PATH }}
 
     - name: 发布固件
-      if: steps.compile.outputs.status == 'success' && env.FIRMWARE_RELEASE == 'true'
-      uses: ncipollo/release-action@v1
+      uses: softprops/action-gh-release@master
       with:
-        name: LEDE-${{ env.FIRMWARE_TAG }}-${{ env.DATE }}
-        allowUpdates: true
-        tag: ${{ env.FIRMWARE_TAG }}
-        token: ${{ secrets.GITHUB_TOKEN }}
-        artifacts: ${{ env.FIRMWARE_PATH }}/*
+        tag_name: openwrt_X86_LEDE
+        files: ${{ env.FIRMWARE_PATH }}/*
         body: |
-          包含passwall、IPV6、打印机驱动、Zerotier、appfilter、Docker
+          包含passwall、IPV6、打印机驱动、Zerotier、应用过滤、Docker
 
           ### 📒 固件信息
           - 💻 平台架构: ${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}
@@ -181,10 +177,15 @@ jobs:
           - 🚀 内核版本: ${{ env.KERNEL }}
           - 🌐 默认地址: 192.168.2.1
           - 🔑 默认密码: password
-          
+          ### 🧊 固件版本
+          - 固件编译前最后一次➦[主源码](${{ env.REPO_URL }})更新记录
+          - ${{ env.COMMIT_DATE }}
+          - ${{ env.COMMIT_MESSAGE }}
+          - ${{ env.COMMIT_HASH }}
     - name: 删除旧版本
       uses: dev-drprasad/delete-older-releases@v0.3.3
       with:
         keep_latest: 10
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        

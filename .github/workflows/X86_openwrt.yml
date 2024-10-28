@@ -163,10 +163,15 @@ jobs:
         path: ${{ env.FIRMWARE_PATH }}
 
     - name: 发布固件
-      uses: softprops/action-gh-release@master
+      if: steps.compile.outputs.status == 'success' && env.FIRMWARE_RELEASE == 'true'
+      uses: ncipollo/release-action@v1
       with:
-        tag_name: openwrt_X86_LEDE
-        files: ${{ env.FIRMWARE_PATH }}/*
+        tag_name: X86-X64
+        name: R${{ env.DATE }} for ${{ env.FIRMWARE_TAG }}
+        allowUpdates: false
+        tag: ${{ env.FIRMWARE_TAG }}
+        token: ${{ secrets.GITHUB_TOKEN }}
+        artifacts: ${{ env.FIRMWARE_PATH }}/*
         body: |
           包含passwall、IPV6、打印机驱动、Zerotier、应用过滤、Docker
 

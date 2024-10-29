@@ -2,9 +2,7 @@ name: OpenWrt_test1
 
 on:
   workflow_dispatch:
-  schedule:
-  # 每天5:00执行一次
-    - cron: 0 21 * * THU
+
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master

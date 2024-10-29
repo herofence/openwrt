@@ -1,11 +1,7 @@
 name: OpenWrt_test3
 
 on:
-  workflow_call:
-    inputs:
-      DEVICE_TARGET:
-        required: true
-        type: string
+  workflow_dispatch:
 
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
@@ -18,9 +14,6 @@ env:
   FIRMWARE_RELEASE: true
   FIRMWARE_TAG: X86_64
   TZ: Asia/Shanghai
-  GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-  DEVICE_TARGET: ${{inputs.DEVICE_TARGET}}
-
 
 jobs:
   Build:
@@ -55,8 +48,6 @@ jobs:
         sudo -E apt-get -y autoremove --purge
         sudo -E apt-get -y clean
         sudo timedatectl set-timezone "$TZ"
-        export WRT_DATE=$(TZ=UTC-8 date +"%y.%m.%d_%H.%M.%S")
-        echo "WRT_DATE=$WRT_DATE" >> $GITHUB_ENV
 
     - name: 容量设置
       uses: easimon/maximize-build-space@master
@@ -82,8 +73,6 @@ jobs:
         echo "COMMIT_MESSAGE=$COMMIT_MESSAGE" >> $GITHUB_ENV
         COMMIT_HASH=$(git show -s --date=short --format="hash: %H")
         echo "COMMIT_HASH=$COMMIT_HASH" >> $GITHUB_ENV
-        echo "WRT_DATE=$WRT_DATE" >> $GITHUB_ENV
-        echo "WRT_VER=$WRT_VER" >> $GITHUB_ENV
 
     - name: 参数配置
       run: |
@@ -176,7 +165,7 @@ jobs:
     - name: 发布固件
       uses: softprops/action-gh-release@master
       with:
-        tag_name: ${{ env.DEVICE_TARGET }}_${{env.WRT_DATE}}
+        tag_name: openwrt_X86_LEDE
         files: ${{ env.FIRMWARE_PATH }}/*
         body: |
           包含passwall、IPV6、打印机驱动、Zerotier、应用过滤、Docker

@@ -6,25 +6,12 @@ on:
       WRT_TARGET:
         required: true
         type: string
-      WRT_THEME:
-        required: true
-        type: string
-      WRT_NAME:
-        required: true
-        type: string
-      WRT_PW:
-        required: true
-        type: string
       WRT_REPO:
         required: true
         type: string
       WRT_BRANCH:
         required: true
         type: string
-      WRT_PACKAGE:
-        required: false
-        type: string
-
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
@@ -38,9 +25,7 @@ env:
   TZ: Asia/Shanghai
   GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
   WRT_TARGET: ${{inputs.WRT_TARGET}}
-  WRT_NAME: ${{inputs.WRT_NAME}}
   WRT_REPO: ${{inputs.WRT_REPO}}
-  WRT_PACKAGE: ${{inputs.WRT_PACKAGE}}
   WRT_BRANCH: ${{inputs.WRT_BRANCH}}
 
 jobs:

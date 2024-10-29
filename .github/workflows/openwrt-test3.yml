@@ -3,9 +3,6 @@ name: X86_64 OpenWrt
 on:
   workflow_call:
     inputs:
-      WRT_TARGET:
-        required: true
-        type: string
       WRT_REPO:
         required: true
         type: string
@@ -24,7 +21,6 @@ env:
   FIRMWARE_TAG: X86_64
   TZ: Asia/Shanghai
   GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-  WRT_TARGET: ${{inputs.WRT_TARGET}}
   WRT_REPO: ${{inputs.WRT_REPO}}
   WRT_BRANCH: ${{inputs.WRT_BRANCH}}
 
@@ -182,7 +178,7 @@ jobs:
     - name: 发布固件
       uses: softprops/action-gh-release@master
       with:
-        tag_name: ${{env.WRT_TARGET}}_${{env.WRT_VER}}_${{env.WRT_DATE}}
+        tag_name: x86-x64_${{env.WRT_VER}}_${{env.WRT_DATE}}
         files: ${{ env.FIRMWARE_PATH }}/*
         body: |
           包含passwall、IPV6、打印机驱动、Zerotier、应用过滤、Docker

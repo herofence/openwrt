@@ -12,12 +12,6 @@ on:
       WRT_NAME:
         required: true
         type: string
-      WRT_WIFI:
-        required: true
-        type: string
-      WRT_IP:
-        required: true
-        type: string
       WRT_PW:
         required: true
         type: string
@@ -27,13 +21,7 @@ on:
       WRT_BRANCH:
         required: true
         type: string
-      WRT_SOURCE:
-        required: false
-        type: string
       WRT_PACKAGE:
-        required: false
-        type: string
-      WRT_TEST:
         required: false
         type: string
 
@@ -50,15 +38,10 @@ env:
   TZ: Asia/Shanghai
   GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
   WRT_TARGET: ${{inputs.WRT_TARGET}}
-  WRT_THEME: ${{inputs.WRT_THEME}}
   WRT_NAME: ${{inputs.WRT_NAME}}
-  WRT_WIFI: ${{inputs.WRT_WIFI}}
-  WRT_IP: ${{inputs.WRT_IP}}
-  WRT_PW: ${{inputs.WRT_PW}}
   WRT_REPO: ${{inputs.WRT_REPO}}
-  WRT_BRANCH: ${{inputs.WRT_BRANCH}}
   WRT_PACKAGE: ${{inputs.WRT_PACKAGE}}
-  WRT_TEST: ${{inputs.WRT_TEST}}
+  WRT_BRANCH: ${{inputs.WRT_BRANCH}}
 
 jobs:
   Build:
@@ -93,6 +76,8 @@ jobs:
         sudo -E apt-get -y autoremove --purge
         sudo -E apt-get -y clean
         sudo timedatectl set-timezone "$TZ"
+        export WRT_VER=$(echo $WRT_REPO | cut -d '/' -f 5-)-$WRT_BRANCH
+        export WRT_DATE=$(TZ=UTC-8 date +"%y.%m.%d_%H.%M.%S")
 
     - name: 容量设置
       uses: easimon/maximize-build-space@master
@@ -118,6 +103,8 @@ jobs:
         echo "COMMIT_MESSAGE=$COMMIT_MESSAGE" >> $GITHUB_ENV
         COMMIT_HASH=$(git show -s --date=short --format="hash: %H")
         echo "COMMIT_HASH=$COMMIT_HASH" >> $GITHUB_ENV
+        echo "WRT_DATE=$WRT_DATE" >> $GITHUB_ENV
+        echo "WRT_VER=$WRT_VER" >> $GITHUB_ENV
 
     - name: 参数配置
       run: |
@@ -210,7 +197,7 @@ jobs:
     - name: 发布固件
       uses: softprops/action-gh-release@master
       with:
-        tag_name: openwrt_X86_LEDE
+        tag_name: ${{env.WRT_TARGET}}_${{env.WRT_VER}}_${{env.WRT_DATE}}
         files: ${{ env.FIRMWARE_PATH }}/*
         body: |
           包含passwall、IPV6、打印机驱动、Zerotier、应用过滤、Docker

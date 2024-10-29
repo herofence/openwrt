@@ -14,6 +14,7 @@ env:
   FIRMWARE_RELEASE: true
   FIRMWARE_TAG: X86_64
   TZ: Asia/Shanghai
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   Build:
@@ -186,6 +187,3 @@ jobs:
       uses: dev-drprasad/delete-older-releases@v0.3.3
       with:
         keep_latest: 10
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        

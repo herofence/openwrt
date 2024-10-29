@@ -57,8 +57,8 @@ jobs:
         sudo -E apt-get -y autoremove --purge
         sudo -E apt-get -y clean
         sudo timedatectl set-timezone "$TZ"
-        export WRT_VER=$(echo $WRT_REPO | cut -d '/' -f 5-)-$WRT_BRANCH
         export WRT_DATE=$(TZ=UTC-8 date +"%y.%m.%d_%H.%M.%S")
+        echo "WRT_DATE=$WRT_DATE" >> $GITHUB_ENV
 
     - name: 容量设置
       uses: easimon/maximize-build-space@master
@@ -178,7 +178,7 @@ jobs:
     - name: 发布固件
       uses: softprops/action-gh-release@master
       with:
-        tag_name: x86-x64_${{env.WRT_VER}}_${{env.WRT_DATE}}
+        tag_name: ${{ env.DEVICE_TARGET }}_${{env.WRT_DATE}}
         files: ${{ env.FIRMWARE_PATH }}/*
         body: |
           包含passwall、IPV6、打印机驱动、Zerotier、应用过滤、Docker

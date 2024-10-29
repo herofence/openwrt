@@ -166,7 +166,7 @@ jobs:
       if: steps.compile.outputs.status == 'success' && env.FIRMWARE_RELEASE == 'true'
       uses: ncipollo/release-action@v1
       with:
-        tag_name: X86-X64-$-{{ env.FILE_DATE }}
+        tag_name: X86-X64-${{ env.FILE_DATE }}
         name: R${{ env.DATE }} for ${{ env.FIRMWARE_TAG }}
         allowUpdates: true
         tag: ${{ env.FIRMWARE_TAG }}

@@ -3,12 +3,10 @@ name: X86_64 OpenWrt
 on:
   workflow_call:
     inputs:
-      WRT_REPO:
+      DEVICE_TARGET:
         required: true
         type: string
-      WRT_BRANCH:
-        required: true
-        type: string
+
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
@@ -21,8 +19,8 @@ env:
   FIRMWARE_TAG: X86_64
   TZ: Asia/Shanghai
   GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-  WRT_REPO: ${{inputs.WRT_REPO}}
-  WRT_BRANCH: ${{inputs.WRT_BRANCH}}
+  DEVICE_TARGET: ${{inputs.DEVICE_TARGET}}
+
 
 jobs:
   Build:

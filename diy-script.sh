@@ -92,6 +92,10 @@ git clone --depth=1 https://github.com/linkease/nas-packages-luci package/nas-pa
 git clone https://github.com/sirpdboy/netspeedtest.git package/netspeedtest
 # 应用过滤
 git clone --depth=1 https://github.com/destan19/OpenAppFilter package/OpenAppFilter
+#IPTV相关
+git clone --depth=1 https://github.com/ximiTech/luci-app-msd_lite package/luci-app-msd_lite
+git clone --depth=1 https://github.com/ximiTech/msd_lite package/msd_lite
+
 #DDNS-GO
 # git clone https://github.com/sirpdboy/luci-app-ddns-go.git package/ddns-go
 #luci-app-tailscale

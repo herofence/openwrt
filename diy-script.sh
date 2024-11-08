@@ -108,7 +108,7 @@ git clone --depth=1 https://github.com/Jason6111/luci-app-netdata package/luci-a
 git_sparse_clone main https://github.com/Lienol/openwrt-package luci-app-filebrowser luci-app-ssr-mudb-server
 git_sparse_clone openwrt-18.06 https://github.com/immortalwrt/luci applications/luci-app-eqos
 
-# 拉取immortalwrt仓库组件
+# 拉取immortalwrt仓库IPTV组件
 rm -rf feeds/packages/net/{haproxy,msd_lite,curl}
 merge_package master https://github.com/immortalwrt/packages feeds/packages/net net/haproxy net/msd_lite net/curl
 

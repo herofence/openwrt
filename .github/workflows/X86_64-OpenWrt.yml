@@ -190,4 +190,4 @@ jobs:
     - name: 删除旧版本
       uses: dev-drprasad/delete-older-releases@v0.3.3
       with:
-        keep_latest: 10
+        keep_latest: 20

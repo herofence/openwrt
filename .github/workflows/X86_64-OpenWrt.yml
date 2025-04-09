@@ -110,6 +110,7 @@ jobs:
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE $OPENWRT_PATH/.config
         chmod +x $GITHUB_WORKSPACE/scripts/diy-script.sh
         chmod +x $GITHUB_WORKSPACE/scripts/theme-setting.sh
+        ./theme-setting.sh
         chmod +x $DIY_SCRIPT
         cd $OPENWRT_PATH
         $GITHUB_WORKSPACE/$DIY_SCRIPT

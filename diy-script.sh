@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # 修改默认IP为192.168.2.1
-sed -i '/lan\.ipaddr/s/[0-9]\+\.[0-9]\+\.[0-9]\+\.[0-9]\+/192.168.2.1/' package/base-files/files/bin/config_generate
-if grep -q "lan.ipaddr=192.168.2.1" package/base-files/files/bin/config_generate; then
-    echo "✅ IP修改成功！"
-else
-    echo "❌ IP修改失败，请检查文件路径或默认IP！"
-    exit 1
-fi
+    mkdir -p $OPENWRT_PATH/package/base-files/files/etc/uci-defaults
+    cat > $OPENWRT_PATH/package/base-files/files/etc/uci-defaults/99-custom-ip <<EOF
+    uci set network.lan.ipaddr='192.168.2.1'
+    uci commit network
+    EOF
+    # 验证
+    cat $OPENWRT_PATH/package/base-files/files/etc/uci-defaults/99-custom-ip
 # 更改boot分区大小为1M
 sed -i 's/256/1024/g' target/linux/x86/image/Makefile
 

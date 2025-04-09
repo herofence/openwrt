@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# 修改默认IP
-sed -i 's/192.168.2.1/10.0.0.1/g' package/base-files/files/bin/config_generate
-
+# 修改默认IP为192.168.2.1
+sed -i 's/192\.168\.[0-9]\+\.1/192.168.2.1/g' package/base-files/files/bin/config_generate
+grep "lan.ipaddr=192.168.2.1" package/base-files/files/bin/config_generate || echo "❌ IP修改失败！"
 # 更改boot分区大小为1M
 sed -i 's/256/1024/g' target/linux/x86/image/Makefile
 

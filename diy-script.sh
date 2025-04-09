@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 修改默认IP为192.168.2.1
-sed -i 's/192\.168\.[0-9]*\.[0-9]*/192.168.2.1/g' package/base-files/files/bin/config_generate
+sed -i '/lan\.ipaddr/s/[0-9]\+\.[0-9]\+\.[0-9]\+\.[0-9]\+/192.168.2.1/' package/base-files/files/bin/config_generate
 if grep -q "lan.ipaddr=192.168.2.1" package/base-files/files/bin/config_generate; then
     echo "✅ IP修改成功！"
 else

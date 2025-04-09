@@ -54,7 +54,6 @@ function merge_package() {
 
 # 移除要替换的包
 rm -rf feeds/packages/net/mosdns
-# rm -rf feeds/packages/net/msd_lite
 rm -rf feeds/packages/net/smartdns
 rm -rf feeds/luci/themes/luci-theme-argon
 rm -rf feeds/luci/applications/luci-app-mosdns
@@ -79,7 +78,6 @@ git clone --depth=1 https://github.com/sbwml/luci-app-mosdns package/luci-app-mo
 # 主题
 git clone https://github.com/jerrykuku/luci-theme-argon package/luci-theme-argon
 git clone --depth=1 https://github.com/jerrykuku/luci-app-argon-config package/luci-app-argon-config
-git clone https://github.com/y9858/luci-theme-opentomcat package/luci-theme-opentomcat
 # smartdns
 git clone --depth=1 -b lede https://github.com/pymumu/luci-app-smartdns package/luci-app-smartdns
 git clone --depth=1 https://github.com/pymumu/openwrt-smartdns package/smartdns
@@ -97,12 +95,6 @@ git clone --depth=1 https://github.com/linkease/nas-packages-luci package/nas-pa
 git clone https://github.com/sirpdboy/netspeedtest.git package/netspeedtest
 # 应用过滤
 git clone --depth=1 https://github.com/destan19/OpenAppFilter package/OpenAppFilter
-#IPTV相关
-# git clone --depth=1 https://github.com/ximiTech/luci-app-msd_lite package/luci-app-msd_lite
-# git clone --depth=1 https://github.com/ximiTech/msd_lite package/msd_lite
-
-#DDNS-GO
-# git clone https://github.com/sirpdboy/luci-app-ddns-go.git package/ddns-go
 #luci-app-tailscale
 # git clone https://github.com/asvow/luci-app-tailscale package/luci-app-tailscale
 #其它
@@ -112,18 +104,11 @@ git clone --depth=1 https://github.com/esirplayground/luci-app-poweroff package/
 git clone --depth=1 https://github.com/Jason6111/luci-app-netdata package/luci-app-netdata
 git_sparse_clone main https://github.com/Lienol/openwrt-package luci-app-filebrowser luci-app-ssr-mudb-server
 git_sparse_clone openwrt-18.06 https://github.com/immortalwrt/luci applications/luci-app-eqos
-
-# 拉取immortalwrt仓库IPTV组件
-# rm -rf feeds/packages/net/{haproxy,msd_lite,curl}
-# merge_package master https://github.com/immortalwrt/packages feeds/packages/net net/haproxy net/msd_lite net/curl
-
 # 科学上网插件
 # git clone --depth=1 -b main https://github.com/fw876/helloworld package/luci-app-ssr-plus
 git clone https://github.com/xiaorouji/openwrt-passwall-packages package/openwrt-passwall
 git clone https://github.com/xiaorouji/openwrt-passwall package/luci-app-passwall
-# git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall2 package/luci-app-passwall2
 # git_sparse_clone master https://github.com/vernesong/OpenClash luci-app-openclash
-
 # 更改默认主题
 sed -i "s/luci-theme-bootstrap/luci-theme-argon/g" ./feeds/luci/collections/luci/Makefile
 

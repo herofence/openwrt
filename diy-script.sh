@@ -127,8 +127,8 @@ sed -i 's/${g}.*/${a}${b}${c}${d}${e}${f}${hydrid}/g' package/lean/autocore/file
 
 # 修改本地时间格式
 sed -i 's#os.date()#os.date("%Y-%m-%d %H:%M:%S") .. " " .. translate(os.date("%A"))#g' package/lean/autocore/files/*/index.htm
-sed -i 's/os.date("%c")/os.date("%Y-%m-%d %H:%M:%S")/g' package/luci-theme-argon/root/etc/uci-defaults/30_luci-theme-argon/admin/system.lua
-
+find feeds/luci/ -name "*.htm" -o -name "*.lua" | xargs grep -l "os.date" 2>/dev/null
+sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M:%S")/g' feeds/luci/themes/*/htdocs/luci-static/*/css/style.css
 # 最大连接数修改为65535
 sed -i '/customized in this file/a net.netfilter.nf_conntrack_max=65535' package/base-files/files/etc/sysctl.conf
 

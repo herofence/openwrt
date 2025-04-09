@@ -127,11 +127,10 @@ sed -i 's/${g}.*/${a}${b}${c}${d}${e}${f}${hydrid}/g' package/lean/autocore/file
 
 # 修改本地时间格式
 sed -i 's#os.date()#os.date("%Y-%m-%d %H:%M:%S") .. " " .. translate(os.date("%A"))#g' package/lean/autocore/files/*/index.htm
-find feeds/luci/ -name "*.htm" -o -name "*.lua" | xargs grep -l "os.date" 2>/dev/null
-sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M:%S")/g' feeds/luci/themes/*/htdocs/luci-static/*/css/style.css
+
 # 最大连接数修改为65535
 sed -i '/customized in this file/a net.netfilter.nf_conntrack_max=65535' package/base-files/files/etc/sysctl.conf
-
+sed -i 's/os.date("%c")/os.date("%Y-%m-%d %H:%M:%S")/g' package/feeds/luci/modules/luci-mod-admin-mini/luasrc/controller/mini/system.lua
 # 修改版本为编译日期
 date_version=$(date +"%y.%m.%d")
 orig_version=$(cat "package/lean/default-settings/files/zzz-default-settings" | grep DISTRIB_REVISION= | awk -F "'" '{print $2}')

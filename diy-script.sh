@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # 修改默认IP为192.168.2.1
-find $OPENWRT_PATH -name "config_generate"
 mkdir -p $OPENWRT_PATH/package/base-files/files/etc/uci-defaults
 cat > $OPENWRT_PATH/package/base-files/files/etc/uci-defaults/99-custom-ip <<EOF
 uci set network.lan.ipaddr='192.168.2.1'

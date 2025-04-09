@@ -127,6 +127,7 @@ sed -i 's/${g}.*/${a}${b}${c}${d}${e}${f}${hydrid}/g' package/lean/autocore/file
 
 # 修改本地时间格式
 sed -i 's#os.date()#os.date("%Y-%m-%d %H:%M:%S") .. " " .. translate(os.date("%A"))#g' package/lean/autocore/files/*/index.htm
+find feeds/luci/ -name "*.htm" -o -name "*.lua" | xargs grep -l "os.date" 2>/dev/null
 sed -i 's/os.date("%c")/os.date("%Y-%m-%d %H:%M:%S")/g' package/feeds/luci/modules/luci-mod-admin-mini/luasrc/controller/mini/system.lua
 
 # 最大连接数修改为65535

@@ -76,7 +76,7 @@ git clone --depth=1 https://github.com/jerrykuku/luci-app-argon-config package/l
 git clone --depth=1 -b lede https://github.com/pymumu/luci-app-smartdns package/luci-app-smartdns
 git clone --depth=1 https://github.com/pymumu/openwrt-smartdns package/smartdns
 # diskman
-git clone https://github.com/lisaac/luci-app-diskman package/applications/luci-app-diskman
+git clone --depth=1 https://github.com/lisaac/luci-app-diskman package/luci-app-diskman
 # dockerman
 git clone https://github.com/WYC-2020/luci-app-dockerman package/applications/luci-app-dockerman
 # lucky

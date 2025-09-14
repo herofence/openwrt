@@ -47,19 +47,13 @@ function merge_package() {
 }
 
 # 移除要替换的包
-rm -rf feeds/packages/net/chinadns-ng
-rm -rf feeds/packages/net/sing-box
-rm -rf feeds/packages/net/xray-core
-rm -rf feeds/packages/net/lucky
 rm -rf feeds/packages/net/mosdns
-rm -rf feeds/packages/net/msd_lite
 rm -rf feeds/packages/net/smartdns
 rm -rf feeds/luci/themes/luci-theme-argon
 rm -rf feeds/luci/applications/luci-app-mosdns
 rm -rf feeds/luci/applications/luci-app-netdata
 rm -rf feeds/luci/applications/luci-app-pushbot
 rm -rf feeds/luci/applications/luci-app-dockerman
-rm -rf feeds/luci/applications/luci-app-diskman
 
 # Git稀疏克隆，只克隆指定目录到本地
 function git_sparse_clone() {

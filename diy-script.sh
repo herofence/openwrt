@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# 将默认IP192.168.1.1替换为192.168.2.1
-# sed -i 's/192.168.1.1/192.168.2.1/g' package/base-files/files/bin/config_generate
+# 将默认IP 10.0.0.1替换为192.168.2.1
+# sed -i 's/192.168.2.1/10.0.0.1/g' package/base-files/files/bin/config_generate
 # 更改boot分区大小为1M
 sed -i 's/256/1024/g' target/linux/x86/image/Makefile
 

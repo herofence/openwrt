@@ -5,9 +5,6 @@
 # 更改boot分区大小为1M
 sed -i 's/256/1024/g' target/linux/x86/image/Makefile
 
-# 改为6.6内核
-# sed -i 's/KERNEL_PATCHVER:=.*/KERNEL_PATCHVER:=6.6/g' ./target/linux/x86/Makefile
-
 # 更改默认 Shell 为 zsh
 sed -i 's/\/bin\/ash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
 
@@ -15,16 +12,12 @@ sed -i 's/\/bin\/ash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
 sed -i "s/timezone='.*'/timezone='CST-8'/g" $CFG_FILE
 sed -i "/timezone='.*'/a\\\t\t\set system.@system[-1].zonename='Asia/Shanghai'" $CFG_FILE
 
-#替换 Tailscale 的默认启动脚本和配置
-# sed -i '/\/etc\/init\.d\/tailscale/d;/\/etc\/config\/tailscale/d;' feeds/packages/net/tailscale/Makefile
-
 # 拉取仓库文件夹
 function merge_package() {
 	# 参数1是分支名,参数2是库地址,参数3是所有文件下载到指定路径。
 	# 同一个仓库下载多个文件夹直接在后面跟文件名或路径，空格分开。
 	# 示例:
 	# merge_package master https://github.com/WYC-2020/openwrt-packages package/openwrt-packages luci-app-eqos luci-app-openclash luci-app-ddnsto ddnsto 
-	# merge_package master https://github.com/lisaac/luci-app-dockerman package/lean applications/luci-app-dockerman
 	if [[ $# -lt 3 ]]; then
 		echo "Syntax error: [$#] [$*]" >&2
 		return 1

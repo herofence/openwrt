@@ -46,7 +46,6 @@ rm -rf feeds/luci/themes/luci-theme-argon
 rm -rf feeds/luci/applications/luci-app-mosdns
 rm -rf feeds/luci/applications/luci-app-netdata
 rm -rf feeds/luci/applications/luci-app-pushbot
-# rm -rf feeds/luci/applications/luci-app-dockerman
 
 # Git稀疏克隆，只克隆指定目录到本地
 function git_sparse_clone() {
@@ -70,8 +69,6 @@ git clone --depth=1 -b lede https://github.com/pymumu/luci-app-smartdns package/
 git clone --depth=1 https://github.com/pymumu/openwrt-smartdns package/smartdns
 # diskman
 git clone https://github.com/lisaac/luci-app-diskman package/applications/luci-app-diskman
-# dockerman
-# git clone https://github.com/WYC-2020/luci-app-dockerman package/applications/luci-app-dockerman
 # lucky
 git clone https://github.com/gdy666/luci-app-lucky.git package/lucky
 # istore

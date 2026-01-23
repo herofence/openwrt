@@ -90,7 +90,7 @@ jobs:
         root-reserve-mb: 1024
 
     - name: 检查代码
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         path: openwrt-scripts
 
@@ -130,7 +130,7 @@ jobs:
 
     - name: 缓存设置
       if: env.CACHE_TOOLCHAIN == 'true'
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: |
           ${{ env.OPENWRT_PATH }}/dl
@@ -221,7 +221,7 @@ jobs:
 
     - name: 上传BIN目录
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ env.SOURCE_REPO }}-bin-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}-${{ env.FILE_DATE }}
         path: ${{ env.OPENWRT_PATH }}/bin
@@ -264,7 +264,7 @@ jobs:
 
     - name: 上传固件目录
       if: steps.compile.outputs.status == 'success' && env.FIRMWARE_RELEASE != 'true'
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ env.SOURCE_REPO }}-firmware-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}-${{ env.FILE_DATE }}
         path: ${{ env.FIRMWARE_PATH }}

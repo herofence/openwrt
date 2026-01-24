@@ -3,7 +3,7 @@ name: OpenWrt_X86-X64
 on:
   workflow_dispatch:
   schedule:
-  # 每周四 21:00 (北京时间周五 5:00)执行一次
+  # 每周五 5:00执行一次
     - cron: 0 21 * * THU
 
 env:
@@ -26,7 +26,7 @@ jobs:
     steps:
     - name: 检查服务器性能
       run: |
-        echo "警告:"
+        echo "警告⚠"
         echo "分配的服务器性能有限，若选择的插件过多，务必注意CPU性能！"
         echo -e "已知CPU型号(降序): 7763，8370C，8272CL，8171M，E5-2673\n"
         echo "--------------------------CPU信息--------------------------"
@@ -90,9 +90,7 @@ jobs:
         root-reserve-mb: 1024
 
     - name: 检查代码
-      uses: actions/checkout@v4
-      with:
-        path: openwrt-scripts
+      uses: actions/checkout@main
 
     - name: 复制源代码
       run: |
@@ -111,8 +109,7 @@ jobs:
 
     - name: 参数配置
       run: |
-        # 复制配置文件
-        cp $CONFIG_FILE $OPENWRT_PATH/.config        
+        cp $CONFIG_FILE $OPENWRT_PATH/.config
         cd $OPENWRT_PATH
         make defconfig > /dev/null 2>&1
         SOURCE_REPO="$(echo $REPO_URL | awk -F '/' '{print $(NF)}')"
@@ -124,14 +121,11 @@ jobs:
 
     - name: 缓存设置
       if: env.CACHE_TOOLCHAIN == 'true'
-      uses: actions/cache@v4
+      uses: HiGarfield/cachewrtbuild@main
       with:
-        path: |
-          ${{ env.OPENWRT_PATH }}/dl
-          ${{ env.OPENWRT_PATH }}/.ccache
-        key: ${{ runner.os }}-openwrt-${{ env.SOURCE_REPO }}-${{ env.REPO_BRANCH }}-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}-${{ hashFiles('${{ env.OPENWRT_PATH }}/.config') }}
-        restore-keys: |
-          ${{ runner.os }}-openwrt-${{ env.SOURCE_REPO }}-${{ env.REPO_BRANCH }}-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}-
+        ccache: false
+        mixkey: ${{ env.SOURCE_REPO }}-${{ env.REPO_BRANCH }}-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}
+        prefix: ${{ env.OPENWRT_PATH }}
 
     - name: 安装源
       run: |
@@ -150,13 +144,13 @@ jobs:
         $GITHUB_WORKSPACE/scripts/preset-clash-core.sh $CLASH_KERNEL
         $GITHUB_WORKSPACE/scripts/preset-terminal-tools.sh
         $GITHUB_WORKSPACE/scripts/preset-adguard-core.sh $CLASH_KERNEL
-
+        $GITHUB_WORKSPACE/scripts/theme-setting.sh
+        
     - name: 下载配件包
       run: |
         cd $OPENWRT_PATH
         make defconfig
-        make download -j$(nproc) || make download -j1
-        # 清理损坏的小文件
+        make download -j8
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
 
@@ -178,45 +172,21 @@ jobs:
 
     - name: 上传BIN目录
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@main
       with:
         name: ${{ env.SOURCE_REPO }}-bin-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}-${{ env.FILE_DATE }}
         path: ${{ env.OPENWRT_PATH }}/bin
-        retention-days: 7
 
     - name: 整理文件
       if: steps.compile.outputs.status == 'success'
       run: |
         cd $OPENWRT_PATH/bin/targets/*/*
-        
-        # 显示校验和
-        cat sha256sums 2>/dev/null || echo "没有找到 sha256sums 文件"
-        
-        # 备份配置文件
-        cp $OPENWRT_PATH/.config build.config 2>/dev/null || echo "无法备份配置"
-        
-        # 整理包文件
-        mkdir -p packages
-        find $OPENWRT_PATH/bin/packages -name "*.ipk" -exec mv {} packages/ \; 2>/dev/null || true
-        
-        # 创建压缩包
-        if [ -d "packages" ] && [ "$(ls -A packages)" ]; then
-          tar -zcf Packages.tar.gz packages
-          rm -rf packages
-        else
-          echo "没有找到包文件"
-        fi
-        
-        # 清理不需要的文件
-        rm -rf feeds.buildinfo version.buildinfo 2>/dev/null || true
-        
-        # 提取内核版本
-        KERNEL_VERSION=$(cat *.manifest 2>/dev/null | grep ^kernel | cut -d- -f2 | tr -d ' ' | head -1)
-        if [ -z "$KERNEL_VERSION" ]; then
-          KERNEL_VERSION="unknown"
-        fi
-        
-        echo "KERNEL=$KERNEL_VERSION" >> $GITHUB_ENV
+        cat sha256sums
+        cp $OPENWRT_PATH/.config build.config
+        mv -f $OPENWRT_PATH/bin/packages/*/*/*.ipk packages
+        tar -zcf Packages.tar.gz packages
+        rm -rf packages feeds.buildinfo version.buildinfo
+        echo "KERNEL=$(cat *.manifest | grep ^kernel | cut -d- -f2 | tr -d ' ')" >> $GITHUB_ENV
         echo "FIRMWARE_PATH=$PWD" >> $GITHUB_ENV
 
     - name: 上传固件目录
@@ -227,35 +197,22 @@ jobs:
         path: ${{ env.FIRMWARE_PATH }}
 
     - name: 发布固件
-      uses: softprops/action-gh-release@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: softprops/action-gh-release@v2.1.0
       with:
         tag_name: openwrt_X86-X64_${{ env.FILE_DATE }}_build${{ github.run_number }}
-        files: |
-          ${{ env.FIRMWARE_PATH }}/*.gz
-          ${{ env.FIRMWARE_PATH }}/*.img
-          ${{ env.FIRMWARE_PATH }}/*.bin
-          ${{ env.FIRMWARE_PATH }}/sha256sums
-          ${{ env.FIRMWARE_PATH }}/Packages.tar.gz
-          ${{ env.FIRMWARE_PATH }}/build.config
+        files: ${{ env.FIRMWARE_PATH }}/*
         body: |
           包含passwall、IPV6、打印机驱动、Zerotier、Easytier、应用过滤、Docker、Lucky、Istore
 
-          ### 📦 固件信息
-          - 🏗️ 平台架构: ${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}
-          - 📚 固件源码: ${{ env.REPO_URL }}
-          - 🌿 源码分支: ${{ env.REPO_BRANCH }}
-          - ⚙️ 内核版本: ${{ env.KERNEL }}
+          ### 📒 固件信息
+          - 💻 平台架构: ${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}
+          - ⚽ 固件源码: ${{ env.REPO_URL }}
+          - 💝 源码分支: ${{ env.REPO_BRANCH }}
+          - 🚀 内核版本: ${{ env.KERNEL }}
           - 🌐 默认地址: 192.168.1.1
           - 🔑 默认密码: password
-          
-          ### 📝 固件版本
-          - 固件编译前最后一次📦[主源码](${{ env.REPO_URL }})更新记录
+          ### 🧊 固件版本
+          - 固件编译前最后一次➦[主源码](${{ env.REPO_URL }})更新记录
           - ${{ env.COMMIT_DATE }}
           - ${{ env.COMMIT_MESSAGE }}
           - ${{ env.COMMIT_HASH }}
-          
-          ### 🗓️ 编译信息
-          - 编译时间: ${{ env.DATE }}
-          - 编译编号: ${{ github.run_number }}

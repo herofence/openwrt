@@ -51,7 +51,7 @@ jobs:
         sudo -E apt-get -y purge azure-cli ghc* zulu* llvm* firefox google* dotnet* powershell openjdk* mongodb* moby* || true
         sudo -E apt-get -y update
         
-        # 安装 OpenWrt 编译依赖包（修复失效的 is.gd 链接）
+        # 安装 OpenWrt 编译依赖包
         sudo -E apt-get -y install \
             ack antlr3 asciidoc autoconf automake autopoint binutils bison \
             build-essential bzip2 ccache cmake cpio curl device-tree-compiler \
@@ -112,13 +112,7 @@ jobs:
     - name: 参数配置
       run: |
         # 复制配置文件
-        if [ -f "$CONFIG_FILE" ]; then
-          cp $CONFIG_FILE $OPENWRT_PATH/.config
-        else
-          echo "警告: 配置文件 $CONFIG_FILE 不存在，将使用默认配置"
-          cp openwrt-scripts/$CONFIG_FILE $OPENWRT_PATH/.config 2>/dev/null || true
-        fi
-        
+        cp $CONFIG_FILE $OPENWRT_PATH/.config        
         cd $OPENWRT_PATH
         make defconfig > /dev/null 2>&1
         SOURCE_REPO="$(echo $REPO_URL | awk -F '/' '{print $(NF)}')"
@@ -147,34 +141,15 @@ jobs:
 
     - name: 加载自定义配置
       run: |
-        # 复制自定义文件
-        [ -d "files" ] && cp -r files $OPENWRT_PATH/ || true
-        
-        # 执行自定义脚本
-        if [ -f "$DIY_SCRIPT" ]; then
-          chmod +x $DIY_SCRIPT
-          cd $OPENWRT_PATH
-          $GITHUB_WORKSPACE/$DIY_SCRIPT
-        fi
-        
-        # 执行预设脚本
-        if [ -d "openwrt-scripts/scripts" ]; then
-          chmod +x openwrt-scripts/scripts/*.sh 2>/dev/null || true
-          cd $OPENWRT_PATH
-          
-          # 检查并执行各个预设脚本
-          [ -f "openwrt-scripts/scripts/preset-clash-core.sh" ] && \
-            openwrt-scripts/scripts/preset-clash-core.sh $CLASH_KERNEL || true
-          
-          [ -f "openwrt-scripts/scripts/preset-terminal-tools.sh" ] && \
-            openwrt-scripts/scripts/preset-terminal-tools.sh || true
-          
-          [ -f "openwrt-scripts/scripts/preset-adguard-core.sh" ] && \
-            openwrt-scripts/scripts/preset-adguard-core.sh $CLASH_KERNEL || true
-          
-          [ -f "openwrt-scripts/scripts/theme-setting.sh" ] && \
-            openwrt-scripts/scripts/theme-setting.sh || true
-        fi
+        [ -e files ] && mv files $OPENWRT_PATH/files
+        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE $OPENWRT_PATH/.config
+        chmod +x $GITHUB_WORKSPACE/scripts/*.sh
+        chmod +x $DIY_SCRIPT
+        cd $OPENWRT_PATH
+        $GITHUB_WORKSPACE/$DIY_SCRIPT
+        $GITHUB_WORKSPACE/scripts/preset-clash-core.sh $CLASH_KERNEL
+        $GITHUB_WORKSPACE/scripts/preset-terminal-tools.sh
+        $GITHUB_WORKSPACE/scripts/preset-adguard-core.sh $CLASH_KERNEL
 
     - name: 下载配件包
       run: |
@@ -190,28 +165,10 @@ jobs:
       run: |
         cd $OPENWRT_PATH
         mkdir -p files/etc/uci-defaults
-        
-        # 复制初始化脚本
-        if [ -f "openwrt-scripts/scripts/init-settings.sh" ]; then
-          cp openwrt-scripts/scripts/init-settings.sh files/etc/uci-defaults/99-init-settings
-        else
-          echo "#!/bin/sh" > files/etc/uci-defaults/99-init-settings
-          echo "# 初始设置脚本" >> files/etc/uci-defaults/99-init-settings
-        fi
-        
+        cp $GITHUB_WORKSPACE/scripts/init-settings.sh files/etc/uci-defaults/99-init-settings
         echo -e "$(nproc) thread compile"
-        
-        # 尝试编译，逐步降低并发数
-        make -j$(nproc) || make -j$(($(nproc)/2)) || make -j1 || make -j1 V=s
-        
-        if [ $? -eq 0 ]; then
-          echo "status=success" >> $GITHUB_OUTPUT
-          echo "COMPILE_STATUS=success" >> $GITHUB_ENV
-        else
-          echo "status=failed" >> $GITHUB_OUTPUT
-          echo "COMPILE_STATUS=failed" >> $GITHUB_ENV
-        fi
-        
+        make -j$(nproc) || make -j1 || make -j1 V=s
+        echo "status=success" >> $GITHUB_OUTPUT
         echo "DATE=$(date +"%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
         echo "FILE_DATE=$(date +"%Y.%m.%d")" >> $GITHUB_ENV
 
@@ -264,15 +221,13 @@ jobs:
 
     - name: 上传固件目录
       if: steps.compile.outputs.status == 'success' && env.FIRMWARE_RELEASE != 'true'
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@main
       with:
         name: ${{ env.SOURCE_REPO }}-firmware-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}-${{ env.FILE_DATE }}
         path: ${{ env.FIRMWARE_PATH }}
-        retention-days: 7
 
     - name: 发布固件
-      if: steps.compile.outputs.status == 'success' && env.FIRMWARE_RELEASE == 'true'
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:

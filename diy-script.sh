@@ -79,6 +79,8 @@ git clone --depth=1 https://github.com/linkease/nas-packages-luci package/nas-pa
 git clone https://github.com/sirpdboy/netspeedtest.git package/netspeedtest
 # 应用过滤
 git clone --depth=1 https://github.com/destan19/OpenAppFilter package/OpenAppFilter
+#VNT
+git clone --depth=1 https://github.com/lmq8267/luci-app-vnt.git package/vnt
 #EasyTier
 git clone --depth=1 https://github.com/EasyTier/luci-app-easytier package/luci-app-easytier
 #tailscale

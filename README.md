@@ -7,5 +7,5 @@ https://github.com/sirpdboy/netspeedtest<br>
 https://github.com/destan19/OpenAppFilter<br>
 https://github.com/sirpdboy/luci-app-ddns-go<br>
 https://github.com/immortalwrt/immortalwrt<br>
-github.com/cg8-5712/vnt<br>
-github.com/whzhni1/luci-app-vnt2<br>
+https://github.com/cg8-5712/vnt<br>
+https://github.com/whzhni1/luci-app-vnt2<br>

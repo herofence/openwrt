@@ -94,8 +94,8 @@ git clone --depth=1 https://github.com/Jason6111/luci-app-netdata package/luci-a
 git_sparse_clone main https://github.com/Lienol/openwrt-package luci-app-filebrowser luci-app-ssr-mudb-server
 git_sparse_clone openwrt-18.06 https://github.com/immortalwrt/luci applications/luci-app-eqos
 # 科学上网插件
-git clone https://github.com/xiaorouji/openwrt-passwall-packages package/openwrt-passwall
-git clone https://github.com/xiaorouji/openwrt-passwall package/luci-app-passwall
+src-git passwall_packages https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git;main
+src-git passwall_luci https://github.com/Openwrt-Passwall/openwrt-passwall.git;main
 # git_sparse_clone master https://github.com/vernesong/OpenClash luci-app-openclash
 # git clone --depth=1 -b main https://github.com/fw876/helloworld package/luci-app-ssr-plus
 # 更改默认主题

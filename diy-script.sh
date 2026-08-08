@@ -98,7 +98,6 @@ git_sparse_clone openwrt-18.06 https://github.com/immortalwrt/luci applications/
 git clone --depth=1 https://github.com/mossdef-org/luci-app-adblock-fast package/luci-app-adblock-fast
 
 # ========== 科学上网插件 ==========
-# OpenClash - 改用直接git clone避免路径嵌套问题
 git clone --depth=1 https://github.com/vernesong/OpenClash.git package/luci-app-openclash
 git clone --depth=1 https://github.com/shadowsocks/shadowsocks-libev package/shadowsocks-libev
 git clone --depth=1 https://github.com/coolsnowwolf/shadowsocksr-libev.git package/shadowsocksr-libev
@@ -108,9 +107,6 @@ git clone https://github.com/xiaorouji/openwrt-passwall package/luci-app-passwal
 # 更新feeds（必须在所有git clone之后）
 ./scripts/feeds update -a
 ./scripts/feeds install -a
-
-# ========== 配置OpenClash依赖（在feeds更新之后执行） ==========
-# 执行make defconfig生成基础配置
 make defconfig
 
 # 定义所有必需的依赖包

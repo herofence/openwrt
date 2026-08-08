@@ -98,8 +98,8 @@ git_sparse_clone openwrt-18.06 https://github.com/immortalwrt/luci applications/
 git clone --depth=1 https://github.com/mossdef-org/luci-app-adblock-fast package/luci-app-adblock-fast
 
 # ========== 科学上网插件 ==========
-# OpenClash
-merge_package master https://github.com/vernesong/OpenClash package/luci-app-openclash luci-app-openclash
+# OpenClash - 改用直接git clone避免路径嵌套问题
+git clone --depth=1 https://github.com/vernesong/OpenClash.git package/luci-app-openclash
 git clone --depth=1 https://github.com/shadowsocks/shadowsocks-libev package/shadowsocks-libev
 git clone --depth=1 https://github.com/coolsnowwolf/shadowsocksr-libev.git package/shadowsocksr-libev
 git clone https://github.com/xiaorouji/openwrt-passwall-packages package/openwrt-passwall
@@ -109,13 +109,27 @@ git clone https://github.com/xiaorouji/openwrt-passwall package/luci-app-passwal
 ./scripts/feeds update -a
 ./scripts/feeds install -a
 
-# ========== 依赖配置（在feeds更新之后） ==========
-# 注意：这些sed命令修改的是.config文件，必须在make defconfig之后执行
-# 但因为我们在workflow中会在diy-script之后执行make defconfig，
-# 所以这里先不修改.config，而是创建一个函数供后续调用
+# ========== 配置OpenClash依赖（在feeds更新之后执行） ==========
+# 执行make defconfig生成基础配置
+make defconfig
 
-# 创建一个标记文件，表示OpenClash依赖需要在defconfig后处理
-echo "OPENCLASH_DEPS_NEEDED=1" >> $GITHUB_ENV
+# 定义所有必需的依赖包
+OPENCLASH_DEPS="dnsmasq-full bash curl ca-bundle ruby ruby-yaml unzip ipset ip-full iptables kmod-ipt-nat iptables-mod-tproxy iptables-mod-extra ip6tables-mod-nat kmod-inet-diag kmod-tun luci luci-base luci-compat"
+
+# 添加依赖包
+for pkg in $OPENCLASH_DEPS; do
+    sed -i "s/.*CONFIG_PACKAGE_${pkg}.*/CONFIG_PACKAGE_${pkg}=y/g" .config
+done
+
+# 移除 dnsmasq 冲突
+sed -i 's/.*CONFIG_PACKAGE_dnsmasq.*//g' .config
+echo "CONFIG_PACKAGE_dnsmasq=n" >> .config
+
+# 确保OpenClash被选中
+sed -i 's/.*CONFIG_PACKAGE_luci-app-openclash.*/CONFIG_PACKAGE_luci-app-openclash=y/g' .config
+
+# 重新生成配置以解决依赖关系
+make defconfig
 
 # 更改默认主题
 sed -i "s/luci-theme-bootstrap/luci-theme-argon/g" ./feeds/luci/collections/luci/Makefile

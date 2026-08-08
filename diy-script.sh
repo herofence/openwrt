@@ -99,6 +99,7 @@ git clone --depth=1 https://github.com/mossdef-org/luci-app-adblock-fast package
 
 # ========== 科学上网插件 ==========
 git clone --depth=1 https://github.com/vernesong/OpenClash.git package/luci-app-openclash
+git clone --depth=1 https://github.com/vernesong/OpenClash.git package/openclash
 git clone --depth=1 https://github.com/shadowsocks/shadowsocks-libev package/shadowsocks-libev
 git clone --depth=1 https://github.com/coolsnowwolf/shadowsocksr-libev.git package/shadowsocksr-libev
 git clone https://github.com/xiaorouji/openwrt-passwall-packages package/openwrt-passwall
@@ -107,7 +108,6 @@ git clone https://github.com/xiaorouji/openwrt-passwall package/luci-app-passwal
 # 更新feeds（必须在所有git clone之后）
 ./scripts/feeds update -a
 ./scripts/feeds install -a
-make defconfig
 
 # 定义所有必需的依赖包
 OPENCLASH_DEPS="dnsmasq-full bash curl ca-bundle ruby ruby-yaml unzip ipset ip-full iptables kmod-ipt-nat iptables-mod-tproxy iptables-mod-extra ip6tables-mod-nat kmod-inet-diag kmod-tun luci luci-base luci-compat"
@@ -117,14 +117,19 @@ for pkg in $OPENCLASH_DEPS; do
     sed -i "s/.*CONFIG_PACKAGE_${pkg}.*/CONFIG_PACKAGE_${pkg}=y/g" .config
 done
 
-# 移除 dnsmasq 冲突
-sed -i 's/.*CONFIG_PACKAGE_dnsmasq.*//g' .config
+# 确保OpenClash被选中
+sed -i 's/.*CONFIG_PACKAGE_luci-app-openclash.*/CONFIG_PACKAGE_luci-app-openclash=y/' .config
+echo "CONFIG_PACKAGE_dnsmasq-full=y" >> .config
+echo "CONFIG_PACKAGE_bash=y" >> .config
+echo "CONFIG_PACKAGE_curl=y" >> .config
+echo "CONFIG_PACKAGE_ca-bundle=y" >> .config
+echo "CONFIG_PACKAGE_ipset=y" >> .config
+echo "CONFIG_PACKAGE_iptables-mod-tproxy=y" >> .config
+echo "CONFIG_PACKAGE_kmod-tun=y" >> .config
+# 移除dnsmasq冲突
+sed -i '/CONFIG_PACKAGE_dnsmasq/d' .config
 echo "CONFIG_PACKAGE_dnsmasq=n" >> .config
 
-# 确保OpenClash被选中
-sed -i 's/.*CONFIG_PACKAGE_luci-app-openclash.*/CONFIG_PACKAGE_luci-app-openclash=y/g' .config
-
-# 重新生成配置以解决依赖关系
 make defconfig
 
 # 更改默认主题

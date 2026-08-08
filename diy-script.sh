@@ -98,39 +98,62 @@ git_sparse_clone openwrt-18.06 https://github.com/immortalwrt/luci applications/
 git clone --depth=1 https://github.com/mossdef-org/luci-app-adblock-fast package/luci-app-adblock-fast
 
 # ========== 科学上网插件 ==========
+# 克隆OpenClash到标准路径（只需要克隆一次）
 git clone --depth=1 https://github.com/vernesong/OpenClash.git package/luci-app-openclash
-git clone --depth=1 https://github.com/vernesong/OpenClash.git package/openclash
-git clone --depth=1 https://github.com/shadowsocks/shadowsocks-libev package/shadowsocks-libev
-git clone --depth=1 https://github.com/coolsnowwolf/shadowsocksr-libev.git package/shadowsocksr-libev
-git clone https://github.com/xiaorouji/openwrt-passwall-packages package/openwrt-passwall
-git clone https://github.com/xiaorouji/openwrt-passwall package/luci-app-passwall
+
+# 可选：克隆其他科学上网插件（根据需要选择）
+# git clone --depth=1 https://github.com/shadowsocks/shadowsocks-libev package/shadowsocks-libev
+# git clone --depth=1 https://github.com/coolsnowwolf/shadowsocksr-libev.git package/shadowsocksr-libev
+# git clone https://github.com/xiaorouji/openwrt-passwall-packages package/openwrt-passwall
+# git clone https://github.com/xiaorouji/openwrt-passwall package/luci-app-passwall
 
 # 更新feeds（必须在所有git clone之后）
 ./scripts/feeds update -a
 ./scripts/feeds install -a
 
-# 定义所有必需的依赖包
-OPENCLASH_DEPS="dnsmasq-full bash curl ca-bundle ruby ruby-yaml unzip ipset ip-full iptables kmod-ipt-nat iptables-mod-tproxy iptables-mod-extra ip6tables-mod-nat kmod-inet-diag kmod-tun luci luci-base luci-compat"
-
-# 添加依赖包
-for pkg in $OPENCLASH_DEPS; do
-    sed -i "s/.*CONFIG_PACKAGE_${pkg}.*/CONFIG_PACKAGE_${pkg}=y/g" .config
-done
-
-# 确保OpenClash被选中
-sed -i 's/.*CONFIG_PACKAGE_luci-app-openclash.*/CONFIG_PACKAGE_luci-app-openclash=y/' .config
-echo "CONFIG_PACKAGE_dnsmasq-full=y" >> .config
-echo "CONFIG_PACKAGE_bash=y" >> .config
-echo "CONFIG_PACKAGE_curl=y" >> .config
-echo "CONFIG_PACKAGE_ca-bundle=y" >> .config
-echo "CONFIG_PACKAGE_ipset=y" >> .config
-echo "CONFIG_PACKAGE_iptables-mod-tproxy=y" >> .config
-echo "CONFIG_PACKAGE_kmod-tun=y" >> .config
-# 移除dnsmasq冲突
+# ========== 配置OpenClash ==========
+# 1. 移除dnsmasq冲突
 sed -i '/CONFIG_PACKAGE_dnsmasq/d' .config
 echo "CONFIG_PACKAGE_dnsmasq=n" >> .config
 
+# 2. 添加OpenClash依赖包（精简版，只添加必要的）
+cat >> .config <<EOF
+# OpenClash 必要依赖
+CONFIG_PACKAGE_dnsmasq-full=y
+CONFIG_PACKAGE_bash=y
+CONFIG_PACKAGE_curl=y
+CONFIG_PACKAGE_ca-bundle=y
+CONFIG_PACKAGE_ipset=y
+CONFIG_PACKAGE_iptables-mod-tproxy=y
+CONFIG_PACKAGE_kmod-tun=y
+CONFIG_PACKAGE_luci-compat=y
+CONFIG_PACKAGE_luci=y
+CONFIG_PACKAGE_luci-base=y
+CONFIG_PACKAGE_unzip=y
+CONFIG_PACKAGE_ip-full=y
+CONFIG_PACKAGE_kmod-ipt-nat=y
+CONFIG_PACKAGE_iptables-mod-extra=y
+CONFIG_PACKAGE_ip6tables-mod-nat=y
+
+# OpenClash 主程序
+CONFIG_PACKAGE_luci-app-openclash=y
+EOF
+
+# 3. 确保OpenClash被选中（防止sed匹配失败）
+sed -i '/CONFIG_PACKAGE_luci-app-openclash/d' .config
+echo "CONFIG_PACKAGE_luci-app-openclash=y" >> .config
+
+# 4. 重新生成配置以解决依赖关系
 make defconfig
+
+# 5. 验证OpenClash是否被正确选中
+if grep -q "CONFIG_PACKAGE_luci-app-openclash=y" .config; then
+    echo "✅ OpenClash 配置成功！"
+else
+    echo "❌ OpenClash 配置失败！"
+    echo "当前 .config 中 OpenClash 相关配置："
+    grep -i "openclash" .config || echo "未找到 OpenClash 配置"
+fi
 
 # 更改默认主题
 sed -i "s/luci-theme-bootstrap/luci-theme-argon/g" ./feeds/luci/collections/luci/Makefile

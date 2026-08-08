@@ -145,24 +145,8 @@ jobs:
         $GITHUB_WORKSPACE/scripts/preset-terminal-tools.sh
         $GITHUB_WORKSPACE/scripts/preset-adguard-core.sh $CLASH_KERNEL
         $GITHUB_WORKSPACE/scripts/theme-setting.sh
-
-    - name: 配置OpenClash依赖
-      run: |
-        cd $OPENWRT_PATH
-        # 执行make defconfig生成完整配置
-        make defconfig
-        # 现在修改.config，添加OpenClash依赖
-        # 定义所有必需的依赖包
-        OPENCLASH_DEPS="dnsmasq-full bash curl ca-bundle ruby ruby-yaml unzip ipset ip-full iptables kmod-ipt-nat iptables-mod-tproxy iptables-mod-extra ip6tables-mod-nat kmod-inet-diag kmod-tun luci luci-base luci-compat"
-        for pkg in $OPENCLASH_DEPS; do
-            sed -i "s/.*CONFIG_PACKAGE_${pkg}.*/CONFIG_PACKAGE_${pkg}=y/g" .config
-        done
-        # 确保移除 dnsmasq 冲突
-        sed -i 's/.*CONFIG_PACKAGE_dnsmasq.*//g' .config
-        echo "CONFIG_PACKAGE_dnsmasq=n" >> .config
-        # 确保OpenClash被选中
-        sed -i 's/.*CONFIG_PACKAGE_luci-app-openclash.*/CONFIG_PACKAGE_luci-app-openclash=y/g' .config
-        # 重新生成配置以解决依赖关系
+        # 注意：OpenClash依赖配置已在diy-script.sh中处理，这里不再重复执行
+        # 执行make defconfig生成最终配置
         make defconfig
 
     - name: 下载配件包

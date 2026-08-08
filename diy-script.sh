@@ -99,6 +99,7 @@ git_sparse_clone openwrt-18.06 https://github.com/immortalwrt/luci applications/
 # OpenClash
 merge_package master https://github.com/vernesong/OpenClash package/luci-app-openclash luci-app-openclash
 git clone --depth=1 https://github.com/shadowsocks/shadowsocks-libev package/shadowsocks-libev
+git clone --depth=1 https://github.com/coolsnowwolf/shadowsocksr-libev.git package/shadowsocksr-libev
 
 # 更新feeds（必须在所有git clone之后）
 ./scripts/feeds update -a

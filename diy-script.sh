@@ -9,6 +9,7 @@ sed -i 's/256/1024/g' target/linux/x86/image/Makefile
 sed -i 's/\/bin\/ash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
 
 # 修改默认时区
+CFG_FILE="package/base-files/files/bin/config_generate"
 sed -i "s/timezone='.*'/timezone='CST-8'/g" $CFG_FILE
 sed -i "/timezone='.*'/a\\\t\t\set system.@system[-1].zonename='Asia/Shanghai'" $CFG_FILE
 
@@ -58,7 +59,7 @@ function git_sparse_clone() {
 }
 
 # 添加额外插件
-#mosdns
+# mosdns
 git clone --depth=1 https://github.com/sbwml/luci-app-mosdns package/luci-app-mosdns
 # 主题
 git clone https://github.com/jerrykuku/luci-theme-argon package/luci-theme-argon
@@ -93,11 +94,25 @@ git clone --depth=1 https://github.com/esirplayground/luci-app-poweroff package/
 git clone --depth=1 https://github.com/Jason6111/luci-app-netdata package/luci-app-netdata
 git_sparse_clone main https://github.com/Lienol/openwrt-package luci-app-filebrowser luci-app-ssr-mudb-server
 git_sparse_clone openwrt-18.06 https://github.com/immortalwrt/luci applications/luci-app-eqos
-# 科学上网插件
-src-git passwall_packages https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git;main
-src-git passwall_luci https://github.com/Openwrt-Passwall/openwrt-passwall.git;main
-# git_sparse_clone master https://github.com/vernesong/OpenClash luci-app-openclash
-# git clone --depth=1 -b main https://github.com/fw876/helloworld package/luci-app-ssr-plus
+
+# ========== 科学上网插件 ==========
+# OpenClash
+merge_package master https://github.com/vernesong/OpenClash package/luci-app-openclash luci-app-openclash
+# Hello World (ssr-plus)
+git clone --depth=1 -b main https://github.com/fw876/helloworld package/luci-app-ssr-plus
+
+# 更新feeds（必须在所有git clone之后）
+./scripts/feeds update -a
+./scripts/feeds install -a
+
+# ========== 依赖配置（在feeds更新之后） ==========
+# 注意：这些sed命令修改的是.config文件，必须在make defconfig之后执行
+# 但因为我们在workflow中会在diy-script之后执行make defconfig，
+# 所以这里先不修改.config，而是创建一个函数供后续调用
+
+# 创建一个标记文件，表示OpenClash依赖需要在defconfig后处理
+echo "OPENCLASH_DEPS_NEEDED=1" >> $GITHUB_ENV
+
 # 更改默认主题
 sed -i "s/luci-theme-bootstrap/luci-theme-argon/g" ./feeds/luci/collections/luci/Makefile
 
@@ -126,6 +141,3 @@ find package/*/ -maxdepth 2 -path "*/Makefile" | xargs -i sed -i 's/PKG_SOURCE_U
 
 # 取消主题默认设置
 find package/luci-theme-*/* -type f -name '*luci-theme-*' -print -exec sed -i '/set luci.main.mediaurlbase/d' {} \;
-
-./scripts/feeds update -a
-./scripts/feeds install -a

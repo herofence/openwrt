@@ -98,8 +98,7 @@ git_sparse_clone openwrt-18.06 https://github.com/immortalwrt/luci applications/
 # ========== 科学上网插件 ==========
 # OpenClash
 merge_package master https://github.com/vernesong/OpenClash package/luci-app-openclash luci-app-openclash
-# Hello World (ssr-plus)
-git clone --depth=1 -b main https://github.com/fw876/helloworld package/luci-app-ssr-plus
+git clone --depth=1 https://github.com/shadowsocks/shadowsocks-libev package/shadowsocks-libev
 
 # 更新feeds（必须在所有git clone之后）
 ./scripts/feeds update -a

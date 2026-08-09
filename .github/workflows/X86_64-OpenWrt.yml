@@ -26,7 +26,7 @@ jobs:
     steps:
     - name: 检查服务器性能
       run: |
-        echo "警告?"
+        echo "警告⚠"
         echo "分配的服务器性能有限，若选择的插件过多，务必注意CPU性能！"
         echo -e "已知CPU型号(降序): 7763，8370C，8272CL，8171M，E5-2673\n"
         echo "--------------------------CPU信息--------------------------"
@@ -206,14 +206,14 @@ jobs:
         body: |
           包含openclash、IPV6、打印机驱动、Zerotier、Easytier、应用过滤、Docker、Lucky、Istore
 
-          ### ?? 固件信息
-          - ?? 平台架构: ${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}
-          - ? 固件源码: ${{ env.REPO_URL }}
-          - ?? 源码分支: ${{ env.REPO_BRANCH }}
-          - ?? 内核版本: ${{ env.KERNEL }}
-          - ?? 默认地址: 192.168.1.1
-          - ?? 默认密码: password
-          ### ?? 固件版本
+          ### 📒 固件信息
+          - 💻平台架构: ${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}
+          - ⚽ 固件源码: ${{ env.REPO_URL }}
+          - 💝 源码分支: ${{ env.REPO_BRANCH }}
+          - 🚀 内核版本: ${{ env.KERNEL }}
+          - 🌐 默认地址: 192.168.1.1
+          - 🔑 默认密码: password
+          ### 🧊 固件版本
           - 固件编译前最后一次?[主源码](${{ env.REPO_URL }})更新记录
           - ${{ env.COMMIT_DATE }}
           - ${{ env.COMMIT_MESSAGE }}

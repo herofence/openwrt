@@ -7,7 +7,7 @@ on:
     - cron: 0 21 * * THU
 
 env:
-  REPO_URL: https://github.com/immortalwrt/immortalwrt
+  REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
   CONFIG_FILE: configs/x86_64.config
   DIY_SCRIPT: diy-script.sh
@@ -167,15 +167,6 @@ jobs:
         echo "status=success" >> $GITHUB_OUTPUT
         echo "DATE=$(date +"%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
         echo "FILE_DATE=$(date +"%Y.%m.%d")" >> $GITHUB_ENV
-        echo "=== 检查生成的 .ipk 文件 ==="
-        find bin/packages -name "*.ipk" -type f | head -20 || echo "未找到 .ipk 文件"
-        find bin -name "*.ipk" -type f | head -20 || echo "在 bin/ 下未找到 .ipk 文件"
-        if [ ${PIPESTATUS[0]} -eq 0 ]; then
-        echo "status=success" >> $GITHUB_OUTPUT
-        else
-        echo "status=failed" >> $GITHUB_OUTPUT
-        exit 1
-        fi
 
     - name: 检查使用空间
       if: (!cancelled())
@@ -194,21 +185,9 @@ jobs:
         cd $OPENWRT_PATH/bin/targets/*/*
         cat sha256sums
         cp $OPENWRT_PATH/.config build.config
-    
-        # 容错处理：查找所有 .ipk 文件并打包，找不到就跳过
-        PKG_DIR="$OPENWRT_PATH/bin/packages"
-        if [ -d "$PKG_DIR" ] && [ -n "$(find $PKG_DIR -name '*.ipk' -print -quit)" ]; then
-          mkdir -p ./all_packages
-          find $PKG_DIR -name "*.ipk" -exec cp {} ./all_packages/ \;
-          tar -zcf Packages.tar.gz -C ./all_packages .
-          rm -rf ./all_packages
-        else
-          echo "警告：未找到任何 .ipk 文件，跳过软件包归档。"
-        fi
-    
-        # 清理文件，忽略错误
-        rm -f feeds.buildinfo version.buildinfo
-    
+        mv -f $OPENWRT_PATH/bin/packages/*/*/*.ipk packages
+        tar -zcf Packages.tar.gz packages
+        rm -rf packages feeds.buildinfo version.buildinfo
         echo "KERNEL=$(cat *.manifest | grep ^kernel | cut -d- -f2 | tr -d ' ')" >> $GITHUB_ENV
         echo "FIRMWARE_PATH=$PWD" >> $GITHUB_ENV
 

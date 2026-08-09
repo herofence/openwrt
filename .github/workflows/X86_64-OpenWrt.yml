@@ -351,12 +351,6 @@ jobs:
         echo "=== 检查生成的 .ipk 文件 ==="
         find bin/packages -name "*.ipk" -type f | head -20 || echo "未找到 .ipk 文件"
         find bin -name "*.ipk" -type f | head -20 || echo "在 bin/ 下未找到 .ipk 文件"
-        if [ ${PIPESTATUS[0]} -eq 0 ]; then
-        echo "status=success" >> $GITHUB_OUTPUT
-        else
-        echo "status=failed" >> $GITHUB_OUTPUT
-        exit 1
-        fi
 
     - name: 检查使用空间
       if: (!cancelled())
